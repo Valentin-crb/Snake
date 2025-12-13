@@ -16,9 +16,15 @@ y_head = 300
 head = pygame.Rect(x_head, y_head, 20, 20)
 culoare_sarpe = (0,204,0)
 directie = ""
+sarpe = [pygame.Rect(x_head, y_head, 20, 20),
+         pygame.Rect(x_head, y_head+20, 20, 20),
+         pygame.Rect(x_head, y_head+40, 20, 20),
+         pygame.Rect(x_head, y_head+60, 20, 20),
+         pygame.Rect(x_head, y_head+80, 20, 20)]
+copie =[0,0,0,0,0]
 
 while True:
-    
+    screen.fill((204,204,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -32,19 +38,26 @@ while True:
                 directie = "stanga"
             if event.key == pygame.K_d and directie != "stanga":
                 directie = "dreapta"
-    
-    
-    if directie == "sus":
-        head.y -=20
-    if directie == "jos":
-        head.y +=20
-    if directie == "stanga":
-        head.x -=20
-    if directie == "dreapta":
-        head.x +=20
-    screen.fill((204,204,0))
+    lungime_sarpe = len(sarpe)
+    pozitii_vechi = [(seg.x, seg.y) for seg in sarpe]
 
-    pygame.draw.rect(screen, culoare_sarpe, head, border_radius= 5)
+    if directie == "sus":
+        sarpe[0].y -=20
+    elif directie == "jos":
+        sarpe[0].y +=20
+    elif directie == "stanga":
+        sarpe[0].x -=20
+    elif directie == "dreapta":
+        sarpe[0].x +=20
+    
+    for i in range(1, len(sarpe)):
+        sarpe[i].x, sarpe[i].y = pozitii_vechi[i-1]
+        
+    for i, seg in enumerate(sarpe):
+        radius = 5 if i == 0 else 2
+        pygame.draw.rect(screen, culoare_sarpe, seg, border_radius=radius)
+
+    
     pygame.display.update()
-    clock.tick(5)
+    clock.tick(15)
     
