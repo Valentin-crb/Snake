@@ -1,4 +1,5 @@
 import pygame
+import random
 from sys import exit
 
 pygame.init()
@@ -21,7 +22,8 @@ sarpe = [pygame.Rect(x_head, y_head, 20, 20),
          pygame.Rect(x_head, y_head+40, 20, 20),
          pygame.Rect(x_head, y_head+60, 20, 20),
          pygame.Rect(x_head, y_head+80, 20, 20)]
-copie =[0,0,0,0,0]
+mar = pygame.Rect(200,500,20,20)
+culoare_mar =(230,0,0)
 
 while True:
     screen.fill((204,204,0))
@@ -38,7 +40,6 @@ while True:
                 directie = "stanga"
             if event.key == pygame.K_d and directie != "stanga":
                 directie = "dreapta"
-    lungime_sarpe = len(sarpe)
     pozitii_vechi = [(seg.x, seg.y) for seg in sarpe]
 
     if directie == "sus":
@@ -49,14 +50,21 @@ while True:
         sarpe[0].x -=20
     elif directie == "dreapta":
         sarpe[0].x +=20
-    
+
+    if sarpe[0].colliderect(mar):
+        mar.x = random.randrange(0,SCREEN_WIDTH,20)
+        mar.y = random.randrange(0,SCREEN_HEIGHT,20)
+        x,y = pozitii_vechi[-1]
+        bloc_nou = pygame.Rect(x,y,20,20)
+        sarpe.append(bloc_nou)
+
     for i in range(1, len(sarpe)):
         sarpe[i].x, sarpe[i].y = pozitii_vechi[i-1]
         
     for i, seg in enumerate(sarpe):
         radius = 5 if i == 0 else 2
         pygame.draw.rect(screen, culoare_sarpe, seg, border_radius=radius)
-
+    pygame.draw.rect(screen,culoare_mar,mar)
     
     pygame.display.update()
     clock.tick(15)
