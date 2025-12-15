@@ -12,6 +12,7 @@ GAME_WIDTH = 680
 GAME_HEIGHT = 480
 x_head = 400
 y_head = 300
+score = 0
 game_over = False
 game_start = False
 
@@ -30,7 +31,7 @@ culoare_mar =(230,0,0)
 font = pygame.font.SysFont(None, 48)
 text_game_over = font.render("GAME OVER", True, (255, 0, 0))
 text_game_start = font.render("PRESS W TO START", True, culoare_sarpe)
-text_score = font.render("SCORE: ",True, culoare_joc)
+text_score = font.render(f"SCORE: {score}",True, culoare_joc)
 rect_over = text_game_over.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
 rect_start = text_game_start.get_rect(center=(SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
 rect_score = text_score.get_rect(bottomleft=(game_screen.left, game_screen.top - 5))
@@ -65,6 +66,8 @@ while True:
                 pygame.Rect(x_head, y_head+60, 20, 20),
                 pygame.Rect(x_head, y_head+80, 20, 20)]
                 directie = "sus"
+                score = 0
+                text_score = font.render(f"SCORE: {score}",True, culoare_joc)
     if not game_over and game_start:
         screen.fill((204,204,0))
         pygame.draw.rect(screen, culoare_joc,game_screen) #desenare ecran
@@ -81,7 +84,7 @@ while True:
         elif directie == "dreapta":
             sarpe[0].x +=20
 
-        if sarpe[0].colliderect(mar): #redesenare mar
+        if sarpe[0].colliderect(mar): #redesenare mar + adaugare scor + marire sarpe
             while True:
                 mar.x = random.randrange(game_screen.left, game_screen.right, 20)
                 mar.y = random.randrange(game_screen.top, game_screen.bottom, 20)
@@ -90,6 +93,8 @@ while True:
             x,y = pozitii_vechi[-1]
             bloc_nou = pygame.Rect(x,y,20,20)
             sarpe.append(bloc_nou)
+            score +=1
+            text_score = font.render(f"SCORE: {score}",True, culoare_joc)
 
         for i in range(1, len(sarpe)):
             sarpe[i].x, sarpe[i].y = pozitii_vechi[i-1]
