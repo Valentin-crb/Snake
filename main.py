@@ -41,13 +41,14 @@ class GameState:
 state = GameState()
 
 text_controls = font.render("WASD - move | R - restart", True, culoare_joc)
-text_game_over = font.render("GAME OVER", True, (255, 0, 0))
+text_game_over = font.render("GAME OVER", True, (200, 0, 0))
+text_restart = font.render("PRESS R TO RESTART",True, (200,0,0))
 text_game_start = font.render("PRESS W TO START", True, culoare_joc)
 rect_over = text_game_over.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
 rect_start = text_game_start.get_rect(center=(SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
 rect_score = state.text_score.get_rect(bottomleft=(game_screen.left, game_screen.top - 5))
-rect_controls = text_controls.get_rect(midbottom=(rect_start.centerx, rect_start.top - 10))
-
+rect_controls = text_controls.get_rect(midbottom=(rect_start.centerx, rect_start.top-10))
+rect_restart = text_restart.get_rect(midtop=(rect_start.centerx, rect_start.bottom+10))
 
 def procesare_input(state):
     for event in pygame.event.get():
@@ -137,6 +138,7 @@ while True:
         
     if state.game_over:
         screen.blit(text_game_over, rect_over)
+        screen.blit(text_restart, rect_restart)
 
     pygame.display.update()
     clock.tick(15)
